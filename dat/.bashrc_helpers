@@ -36,7 +36,6 @@ alias mci.skiptests='mvn clean install -Dmaven.test.skip=true'
 alias rc='source ~/.bashrc'
 alias rm='rm --interactive=never'
 alias sur='sudo su -'
-alias suu="su - $(id -un 1000)"
 alias viO='vi -O'
 alias vio='vi -o'
 alias v='vi -p'
