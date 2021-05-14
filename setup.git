@@ -2,7 +2,7 @@
 [ $(id -u) == 0 ] && { echo Please run as $(cat /tmp/username).; exit 1; }
 set -x
 cd /home/$(cat /tmp/username)/git/fastup
-gpg --import --pinentry-mode loopback dat/github.gpg
+gpg -allow-secret-key-import --import --pinentry-mode loopback dat/github.gpg
 git-crypt unlock
 
 echo Done.
