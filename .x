@@ -1,5 +1,6 @@
 execute(){
-	./test
+	cat README.md
+	docker run --rm -it --name fastup debian bash
 }
 case "$1" in
 	e)

@@ -5,5 +5,5 @@ Fast Debian Setup for Amazon AWS EC2 Instances.
 # Usage
 
 ```
-curl -s https://github.com/rodolfoap/fastup/raw/dev/setup|bash
+apt update && apt -y install git curl && curl -s https://raw.githubusercontent.com/rodolfoap/fastup/dev/setup|bash
 ```

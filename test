@@ -1,4 +1,0 @@
-#!/bin/bash
-docker run --rm -it 		\
-	--name fastup		\
-	debian 'curl -s https://github.com/rodolfoap/fastup/raw/dev/setup|bash'
