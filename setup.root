@@ -1,0 +1,7 @@
+#!/bin/bash
+set -x
+cd /root/fastup
+gpg --import dat/github.gpg
+git-crypt unlock
+
+echo Done.
