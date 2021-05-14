@@ -1,0 +1,11 @@
+#!/bin/bash
+set -x
+export DEBIAN_FRONTEND=noninteractive
+echo 'deb http://deb.debian.org/debian buster-backports main' > /etc/apt/sources.list.d/backports.list
+apt update
+apt -y install git
+git clone https://github.com/rodolfoap/fastup.git
+cd fastup
+apt update
+apt -y -t buster-backports full-upgrade
+apt -y install -t buster-backports $(grep -v '^#' software.basic)

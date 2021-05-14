@@ -1,3 +1,4 @@
-total 4
--rw-r--r-- 1 rodolfoap rodolfoap 84 May 14 06:52 README.md
--rw-r--r-- 1 rodolfoap rodolfoap  0 May 14 06:54 test
+#!/bin/bash
+docker run --rm -it 		\
+	--name fastup		\
+	debian 'curl -s https://github.com/rodolfoap/fastup/raw/dev/setup|bash'
