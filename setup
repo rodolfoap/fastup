@@ -1,15 +1,25 @@
 #!/bin/bash
 set -x
+USERNAME=rap
+
+# Non-root user setup
+grep ^${USERNAME}: /etc/passwd || useradd -d /home/${USERNAME} ${USERNAME}
+echo "${USERNAME} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${USERNAME}
+echo "${USERNAME}" > /tmp/username
+
+# Basic setup
 export DEBIAN_FRONTEND=noninteractive
 echo 'deb http://deb.debian.org/debian buster-backports main' > /etc/apt/sources.list.d/backports.list
 apt update 								&> /root/au.$(date +%Y%m%d.%H%M%S).log
 
-# Assuming curl and git are already installed...
-git clone https://github.com/rodolfoap/fastup.git /root/fastup
-cd /root/fastup
+# Git setup (assuming curl and git are already installed)
+mkdir -p /home/${USERNAME}/git/
+git clone https://github.com/rodolfoap/fastup.git /home/${USERNAME}/git/fastup
+cd /home/${USERNAME}/fastup
 apt -y -t buster-backports full-upgrade 				&> /root/fu.$(date +%Y%m%d.%H%M%S).log
 apt -y install -t buster-backports $(grep -v '^#' dat/software.basic)	&> /root/sb.$(date +%Y%m%d.%H%M%S).log
 
+# Fix .bashrc
 ./dat/bashrc.fix
 
 echo Done.
