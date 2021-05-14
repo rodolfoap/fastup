@@ -27,4 +27,12 @@ cp -r /root/fastup /home/${USERNAME}/git/fastup
 ./dat/bashrc.fix
 chown -R ${USERNAME}: /home/${USERNAME}
 
-echo Done.
+set +x
+cat << EOF
+
+Done.
+
+Reload config:
+	cd && source .bashrc
+
+EOF
