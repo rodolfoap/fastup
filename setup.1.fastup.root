@@ -13,8 +13,10 @@ cat << EOF
 
 Done. Prepare OAuth2:
 
-	su - rap      
-	cd git/fastup/lib/
+	su - rap
+	cd git/fastup
+	./setup.1.fastup.user
+	cd lib
 	./setup.2.ks
 	./setup.3.git
 
