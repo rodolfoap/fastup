@@ -2,6 +2,7 @@
 [ $(id -u) == 0 ] && { echo Please run as $(cat /tmp/username).; exit 1; }
 set -x
 echo 'pinentry-program /usr/bin/pinentry-tty' >> ~/.gnupg/gpg-agent.conf
+mkdir -p /home/$(cat /etc/username)/.gnupg/
 cd /home/$(cat /etc/username)/git/fastup
 gpg --import --pinentry-mode loopback dat/github.gpg
 git-crypt unlock
