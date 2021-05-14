@@ -1,8 +1,10 @@
 #!/bin/bash
 [ $(id -u) == 0 ] && { echo Please run as $(cat /tmp/username).; exit 1; }
 set -x
+echo 'pinentry-program /usr/bin/pinentry-tty' >> ~/.gnupg/gpg-agent.conf
 cd /home/$(cat /tmp/username)/git/fastup
-gpg -allow-secret-key-import --import --pinentry-mode loopback dat/github.gpg
+#gpg -allow-secret-key-import --import --pinentry-mode loopback dat/github.gpg
+gpg --import dat/github.gpg
 git-crypt unlock
 
 echo Done.
