@@ -30,9 +30,9 @@ chown -R ${USERNAME}: /home/${USERNAME}
 set +x
 cat << EOF
 
-Done.
+Done. To reload config:
 
-Reload config:
 	cd && source .bashrc
+	cd fastup
 
 EOF
