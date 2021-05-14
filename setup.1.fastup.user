@@ -1,13 +1,14 @@
 #!/bin/bash
-[ $(id -u) == 0 ] && { echo Please run as $(cat /tmp/username).; exit 1; }
+USERNAME=$(cat /etc/username)
+[ $(id -u) == 0 ] && { echo Please run as ${USERNAME}.; exit 1; }
 set -x
 
 # Workaround https://unix.stackexchange.com/questions/564614/when-run-with-sudo-gpg-cant-use-my-secret-key-even-though-it-shows-up-with-li
 sudo chmod o+rw $(tty)
 
-cd /home/$(cat /etc/username)/git/fastup
+# Extract files
+cd /home/${USERNAME}/git/fastup
 gpg --import --pinentry-mode loopback dat/github.gpg
-git-crypt lock
-git-crypt unlock dat/github.gpg
+git-crypt unlock
 
 echo Done.

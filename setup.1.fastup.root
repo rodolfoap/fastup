@@ -3,12 +3,10 @@
 USERNAME=$(cat /etc/username)
 set -x
 
+# Extract files
 cd /root/fastup
 gpg --import --pinentry-mode loopback dat/github.gpg
 git-crypt unlock
-
-rsync -a /root/fastup/ /home/$(cat /etc/username)/git/fastup/
-chown -R ${USERNAME}: /home/${USERNAME}
 
 set +x
 cat << EOF
