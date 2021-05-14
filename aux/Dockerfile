@@ -1,3 +1,6 @@
 FROM debian:latest
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt update && apt -y install git curl
+RUN echo 'deb http://deb.debian.org/debian buster-backports main' > /etc/apt/sources.list.d/backports.list
+RUN apt update
+ARG SOFTWARE
+RUN apt -y install ${SOFTWARE}
