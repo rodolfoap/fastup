@@ -4,7 +4,7 @@ execute(){
 }
 case "$1" in
 	e)
-		vi -p test setup
+		vi -p setup
 	;;
 	"")
 		execute

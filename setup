@@ -2,13 +2,13 @@
 set -x
 export DEBIAN_FRONTEND=noninteractive
 echo 'deb http://deb.debian.org/debian buster-backports main' > /etc/apt/sources.list.d/backports.list
-apt update
+apt update 								&> /root/au.$(date +%Y%m%d.%H%M%S).log
 
 # Assuming curl and git are already installed...
 git clone https://github.com/rodolfoap/fastup.git /root/fastup
 cd /root/fastup
-apt -y -t buster-backports full-upgrade 				&> $(date +%Y%m%d.%H%M%S).log
-apt -y install -t buster-backports $(grep -v '^#' dat/software.basic)	&> $(date +%Y%m%d.%H%M%S).log
+apt -y -t buster-backports full-upgrade 				&> /root/fu.$(date +%Y%m%d.%H%M%S).log
+apt -y install -t buster-backports $(grep -v '^#' dat/software.basic)	&> /root/sb.$(date +%Y%m%d.%H%M%S).log
 
 echo Done.
 sleep 2
