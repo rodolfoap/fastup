@@ -8,3 +8,4 @@ for FILE in .bashrc_*; do
 	echo ". ~/${FILE}" >> /root/.bashrc
 	echo ". ~/${FILE}" >> /home/${USERNAME}/.bashrc
 done
+cp .profile /home/${USERNAME}/
