@@ -1,6 +1,6 @@
 # Add this to your .bashrc file...
 
-USERNAME=$(cat /tmp/username)
+USERNAME=$(cat /etc/username)
 cd $(cd $(dirname "${BASH_SOURCE[0]}")&>/dev/null&&pwd)
 for FILE in .bashrc_*; do
 	cp -v ${FILE} /root/

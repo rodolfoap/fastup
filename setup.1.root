@@ -1,0 +1,9 @@
+#!/bin/bash
+[ $(id -u) == 0 ] || { echo Please run as root.; exit 1; }
+set -x
+echo 'pinentry-program /usr/bin/pinentry-tty' >> ~/.gnupg/gpg-agent.conf
+cd /root/fastup
+gpg --import --pinentry-mode loopback dat/github.gpg
+git-crypt unlock
+
+echo Done.
