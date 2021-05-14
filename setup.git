@@ -1,4 +1,5 @@
 #!/bin/bash
+[ $(id -u) == 0 ] && { echo Please run as $(cat /tmp/username).; exit 1; }
 set -x
 cd /home/$(cat /tmp/username)/git/fastup
 gpg --import dat/github.gpg

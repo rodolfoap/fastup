@@ -1,4 +1,5 @@
 #!/bin/bash
+[ $(id -u) == 0 ] || { echo Please run as root.; exit 1; }
 set -x
 USERNAME=rap
 
