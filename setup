@@ -7,8 +7,8 @@ apt update
 # Assuming curl and git are already installed...
 git clone https://github.com/rodolfoap/fastup.git /root/fastup
 cd /root/fastup
-apt -y -t buster-backports full-upgrade
-apt -y install -t buster-backports $(grep -v '^#' dat/software.basic)
+apt -y -t buster-backports full-upgrade 				&> $(date +%Y%m%d.%H%M%S).log
+apt -y install -t buster-backports $(grep -v '^#' dat/software.basic)	&> $(date +%Y%m%d.%H%M%S).log
 
 echo Done.
 sleep 2
