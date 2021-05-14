@@ -3,7 +3,7 @@ set -x
 USERNAME=rap
 
 # Non-root user setup
-grep ^${USERNAME}: /etc/passwd || useradd -d /home/${USERNAME} ${USERNAME}
+grep ^${USERNAME}: /etc/passwd || useradd -d /home/${USERNAME} -s /bin/bash ${USERNAME}
 echo "${USERNAME} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${USERNAME}
 echo "${USERNAME}" > /tmp/username
 
@@ -21,6 +21,6 @@ apt -y install -t buster-backports $(grep -v '^#' dat/software.basic)	&> /root/s
 
 # Fix .bashrc
 ./dat/bashrc.fix
-chmod -R ${USERNAME}: /home/${USERNAME}
+chown -R ${USERNAME}: /home/${USERNAME}
 
 echo Done.
