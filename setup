@@ -15,7 +15,7 @@ apt update 								&> /root/au.$(date +%Y%m%d.%H%M%S).log
 # Git setup (assuming curl and git are already installed)
 mkdir -p /home/${USERNAME}/git/
 git clone https://github.com/rodolfoap/fastup.git /home/${USERNAME}/git/fastup
-cd /home/${USERNAME}/fastup
+cd /home/${USERNAME}/git/fastup
 apt -y -t buster-backports full-upgrade 				&> /root/fu.$(date +%Y%m%d.%H%M%S).log
 apt -y install -t buster-backports $(grep -v '^#' dat/software.basic)	&> /root/sb.$(date +%Y%m%d.%H%M%S).log
 
