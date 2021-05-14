@@ -2,6 +2,9 @@
 [ $(id -u) == 0 ] && { echo Please run as $(cat /tmp/username).; exit 1; }
 set -x
 
+# Workaround https://unix.stackexchange.com/questions/564614/when-run-with-sudo-gpg-cant-use-my-secret-key-even-though-it-shows-up-with-li
+sudo chmod o+rw $(tty)
+
 cd /home/$(cat /etc/username)/git/fastup
 gpg --import --pinentry-mode loopback dat/github.gpg
 git-crypt lock
