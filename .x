@@ -4,7 +4,7 @@ execute(){
 }
 case "$1" in
 	e)
-		vi -p setup ./setup.1.fastup.{user,root} .x
+		vi -p setup ./setup.1.fastup.{user,root} ./lib/setup.{2.ks,3.git,9.sw} TODO .x
 	;;
 	"")
 		execute
