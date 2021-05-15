@@ -1,0 +1,4 @@
+git remote set-url origin https://git-repo/new-repository.git
+git config --global user.email "r@ydor.org"
+git config --global user.name  "RodolfoAP"
+
