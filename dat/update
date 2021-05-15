@@ -2,4 +2,6 @@
 set -x
 
 sudo cp -v /etc/apt/sources.list .
-sudo chown -R $(/usr/bin/id -un): sources.list
+sudo rsync -va /etc/apt/sources.list.d/ ./sources.list.d/
+
+sudo chown -R $(/usr/bin/id -un): .
