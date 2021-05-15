@@ -1,6 +1,6 @@
 # Backports usage:
 #
-#	apt-get -t buster-backports install libreoffice
+# 	apt-get -t buster-backports install libreoffice
 #
 
 deb		http://deb.debian.org/debian/			buster 			main	contrib	non-free
@@ -15,3 +15,4 @@ deb		http://deb.debian.org/debian/			buster-backports	main	contrib	non-free
 #deb		http://deb.debian.org/debian			experimental		main	contrib	non-free
 deb		http://www.deb-multimedia.org			buster			main
 deb		http://www.deb-multimedia.org			buster-backports	main
+deb		http://cloud.r-project.org/bin/linux/debian 	buster-cran40/
