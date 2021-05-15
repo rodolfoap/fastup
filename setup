@@ -17,7 +17,7 @@ apt update 								&> /tmp/setup-01.log
 git clone https://github.com/rodolfoap/fastup.git /root/fastup
 cd /root/fastup
 apt -y install -t buster-backports $(grep -v '^#' dat/software.basic)	&> /tmp/setup-03.log
-sudo python3 -m pip install --no-input pynvim
+sudo python3 -m pip install --no-input pynvim				&> /tmp/setup-04.log
 
 # User setup
 mkdir -p /home/${USERNAME}/git/
