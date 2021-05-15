@@ -15,9 +15,6 @@ apt update 								&> /tmp/setup-01.log
 
 # Git setup (assuming curl and git are already installed)
 git clone https://github.com/rodolfoap/fastup.git /root/fastup
-cd /root/fastup
-# TODO: Buster is buggy at the date!
-# apt -y -t buster-backports full-upgrade 				&> /tmp/setup-02.log
 apt -y install -t buster-backports $(grep -v '^#' dat/software.basic)	&> /tmp/setup-03.log
 
 # User setup
