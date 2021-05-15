@@ -1,0 +1,5 @@
+#!/bin/bash
+set -x
+
+SOFTWARE=$(cat ../dat/software.basic)
+docker build --build-arg SOFTWARE="$SOFTWARE" -t debian-pre .
