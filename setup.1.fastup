@@ -14,13 +14,16 @@ git config --global pull.rebase true
 # Extract files
 cd /home/${USERNAME}/git/fastup
 
-# Unlock
+# Unlock GPG key, just one-time phraseing
 read -sp '*: ' PPHRASE && export PPHRASE
+
+# Although the agent would support the import without the phrase, this first import is required to create ~/.gnupg
 gpg --import --passphrase "${PPHRASE}" --batch dat/github.gpg
 gpg --list-keys
-echo use-agent > ~/.gnupg/gpg.conf
 gpg-connect-agent killagent /bye
 gpg-agent --daemon --allow-preset-passphrase
+
+# See gpg --with-keygrip --list-secret-keys
 for KEYGRIP in $(gpg --with-keygrip --list-secret-keys|grep Keygrip|awk '{print $3}'); do echo "$PPHRASE"|/usr/lib/gnupg2/gpg-preset-passphrase -c ${KEYGRIP}; done
 git-crypt unlock
 git remote set-url origin git@github.com:rodolfoap/fastup.git
