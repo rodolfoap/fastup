@@ -33,12 +33,9 @@ cat << EOF
 Done. To unlock:
 
 	cd && source .bashrc
-	cd fastup
-	./setup.1.fastup.root
-
 	su - rap
 	cd git/fastup
-	./setup.1.fastup.user
+	./setup.1.fastup
 	cd lib
 	./setup.2.ks
 	./setup.3.git
