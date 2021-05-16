@@ -37,7 +37,6 @@ Done. To unlock:
 	cd git/fastup
 	./setup.1.fastup
 	cd lib
-	./setup.2.ks
-	./setup.3.git
+	./setup.2.git
 
 EOF
