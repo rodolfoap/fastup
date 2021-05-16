@@ -6,11 +6,13 @@ set -x
 # Workaround https://unix.stackexchange.com/questions/564614/when-run-with-sudo-gpg-cant-use-my-secret-key-even-though-it-shows-up-with-li
 sudo chmod o+rw $(tty)
 
-# Extract files
-cd /home/${USERNAME}/git/fastup
+# Git setup
 git config --global user.email "r@ydor.org"
 git config --global user.name  "RodolfoAP"
 git config --global pull.rebase true
+
+# Extract files
+cd /home/${USERNAME}/git/fastup
 gpg --import --pinentry-mode loopback dat/github.gpg
 git-crypt unlock
 git remote set-url origin git@github.com:rodolfoap/fastup.git
