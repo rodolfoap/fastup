@@ -38,5 +38,6 @@ Done. To unlock:
 	./setup.1.fastup
 	cd lib
 	./setup.2.git
+	./setup.3.home
 
 EOF

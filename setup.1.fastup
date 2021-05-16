@@ -24,7 +24,7 @@ gpg-connect-agent killagent /bye
 gpg-agent --daemon --allow-preset-passphrase
 
 # See gpg --with-keygrip --list-secret-keys
-for KEYGRIP in $(gpg --with-keygrip --list-secret-keys|grep Keygrip|awk '{print $3}'); do echo "$PPHRASE"|/usr/lib/gnupg2/gpg-preset-passphrase -c ${KEYGRIP}; done
+for KEYGRIP in $(gpg --with-keygrip --list-secret-keys|grep Keygrip|awk '{print $3}'); do /usr/lib/gnupg2/gpg-preset-passphrase -c ${KEYGRIP} <<< "$PPHRASE"; done
 git-crypt unlock
 git remote set-url origin git@github.com:rodolfoap/fastup.git
 
