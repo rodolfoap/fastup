@@ -1,7 +1,6 @@
 /lib/* 				filter=git-crypt diff=git-crypt
 /lib/**/* 			filter=git-crypt diff=git-crypt
 dat/update			filter=git-crypt diff=git-crypt
-dat/update.old			filter=git-crypt diff=git-crypt
 dat/trusted-keys		filter=git-crypt diff=git-crypt
 dat/sources.list		filter=git-crypt diff=git-crypt
 dat/software.all		filter=git-crypt diff=git-crypt
