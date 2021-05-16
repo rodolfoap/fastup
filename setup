@@ -1,27 +1,27 @@
 #!/bin/bash
 [ $(id -u) == 0 ] || { echo Please run as root.; exit 1; }
 set -x
+
+# The main user username is saved into /etc/username
 USERNAME=rap
 echo "${USERNAME}" > /etc/username
 
-# Non-root user setup
+# The main user setup
 grep ^${USERNAME}: /etc/passwd || useradd -d /home/${USERNAME} -s /bin/bash ${USERNAME}
 echo "${USERNAME} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${USERNAME}
+mkdir -p /home/${USERNAME}/git/
 
-# Basic setup
+# Fastup setup (assuming curl and git are already installed)
+git clone https://github.com/rodolfoap/fastup.git /root/fastup
+cp -r /root/fastup /home/${USERNAME}/git/fastup
+cd /root/fastup
+
+# APT setup
 export DEBIAN_FRONTEND=noninteractive
 echo 'deb http://deb.debian.org/debian buster-backports main' > /etc/apt/sources.list.d/backports.list
 apt update 								&> /tmp/setup-01.log
-
-# Git setup (assuming curl and git are already installed)
-git clone https://github.com/rodolfoap/fastup.git /root/fastup
-cd /root/fastup
 apt -y install -t buster-backports $(grep -v '^#' dat/software.basic)	&> /tmp/setup-03.log
 sudo python3 -m pip install --no-input pynvim				&> /tmp/setup-04.log
-
-# User setup
-mkdir -p /home/${USERNAME}/git/
-cp -r /root/fastup /home/${USERNAME}/git/fastup
 
 # Fix .bashrc
 ./dat/bashrc.fix
@@ -30,10 +30,17 @@ chown -R ${USERNAME}: /home/${USERNAME}
 set +x
 cat << EOF
 
-Done. To follow:
+Done. To unlock:
 
 	cd && source .bashrc
 	cd fastup
 	./setup.1.fastup.root
+
+	su - rap
+	cd git/fastup
+	./setup.1.fastup.user
+	cd lib
+	./setup.2.ks
+	./setup.3.git
 
 EOF
