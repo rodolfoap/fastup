@@ -8,3 +8,4 @@ sudo
 mc
 rsync
 python3-pip
+gpm
