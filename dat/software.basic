@@ -9,4 +9,4 @@ mc
 rsync
 python3-pip
 gpm
-wicd-curses
+#wicd-curses
