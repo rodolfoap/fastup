@@ -18,9 +18,9 @@ cd /root/fastup
 
 # APT setup
 export DEBIAN_FRONTEND=noninteractive
-echo 'deb http://deb.debian.org/debian buster-backports main' > /etc/apt/sources.list.d/backports.list
+echo 'deb http://deb.debian.org/debian bullseye-backports main' > /etc/apt/sources.list.d/backports.list
 apt update 								&> /tmp/setup-01.log
-apt -y install -t buster-backports $(grep -v '^#' dat/software.basic)	&> /tmp/setup-03.log
+apt -y install -t bullseye-backports $(grep -v '^#' dat/software.basic)	&> /tmp/setup-03.log
 sudo python3 -m pip install --no-input pynvim				&> /tmp/setup-04.log
 
 # Fix .bashrc
