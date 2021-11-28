@@ -40,5 +40,6 @@ Done. To unlock:
 	cd lib
 	./setup.2.git
 	./setup.3.home
+	./setup.6.sw
 
 EOF
