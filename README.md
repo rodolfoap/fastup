@@ -19,3 +19,6 @@ Fast Debian Setup for Amazon AWS EC2 Instances.
 apt update && apt -y install git curl sudo && \
 curl -s https://raw.githubusercontent.com/rodolfoap/fastup/dev/setup|bash
 ```
+
+### Others
+`setup.aws` is a minimal one.

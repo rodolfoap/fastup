@@ -1,0 +1,19 @@
+#!/bin/bash
+[ $(id -u) == 0 ] || { echo Please run as root.; exit 1; }
+set -x
+
+# The main user username
+USERNAME=admin
+cd /root
+
+# APT setup
+export DEBIAN_FRONTEND=noninteractive
+apt update
+apt -y install jq git rsync netcat-openbsd wget
+
+# Fix .bashrc
+wget https://raw.githubusercontent.com/rodolfoap/fastup/dev/dat/.bashrc_helpers
+cp .bashrc_helpers /home/admin/
+grep -sq bashrc_helpers /root/.bashrc || echo ". ~/.bashrc_helpers" >> /root/.bashrc
+grep -sq bashrc_helpers /home/admin/.bashrc || echo ". ~/.bashrc_helpers" >> /home/admin/.bashrc
+chown -R ${USERNAME}: /home/${USERNAME}
