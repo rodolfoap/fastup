@@ -21,4 +21,5 @@ curl -s https://raw.githubusercontent.com/rodolfoap/fastup/dev/setup|bash
 ```
 
 ### Others
-`setup.aws` is a minimal one.
+
+`setup.aws` is a minimal one, just root access and aliases.
