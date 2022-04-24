@@ -4,28 +4,46 @@
 # Kubernetes
 
 # New aliases
-kl()	{ kubectl get all -o wide|sed "s/^/\t/"|sed "s/^\tNAME/>>\tNAME/"; echo; }
-kll()	{ kubectl get all,secret,cm,pv,pvc,ingress -o wide|sed "s/^/\t/"|sed "s/^\tNAME/>>\tNAME/"; echo; }
-klw()	{ watch -n0.1 'kubectl get all,secret,cm -o wide'; }
+kl()	{ tput rmam; kubectl get pod,service,pvc,pv -o wide|sed "s/^/\t/"|sed "s/^\tNAME/>>\tNAME/"; tput smam; echo; }
+kl.watch() { watch -n0.1 'kubectl get pod,service,pvc,pv -o wide | sed "s/^/\t/" | sed "s/^\tNAME/>>\tNAME/";'; }
+kw() 	{ watch -n0.1 'kubectl get pod,service,pvc,pv,ingress -o wide | sed "s/^/\t/" | sed "s/^\tNAME/>>\tNAME/";'; }
+kll()	{ tput rmam; kubectl get all,secret,cm,pvc,pv,sc,jobs,cronjobs -o wide|sed "s/^/\t/"|sed "s/^\tNAME/>>\tNAME/"; tput smam; echo; }
+klw()	{ watch -n0.1 'kubectl get all,secret,cm,pvc,pv,sc -o wide'; }
 
 kla()	{ kubectl get all --all-namespaces -o wide|sed "s/^/\t/"|sed "s/^\tNAME/>>\tNAME/"; echo; }
-klaa()	{ kubectl get all,secret,cm,pv,pvc,ingress --all-namespaces -o wide|sed "s/^/\t/"|sed "s/^\tNAME/>>\tNAME/"; echo; }
+kll()	{ kubectl get all,secret,cm,pvc,pv,sc,jobs,cronjobs -o wide|sed "s/^/\t/"|sed "s/^\tNAME/>>\tNAME/"; echo; }
+klaa()	{ kubectl get all,secret,cm,pvc,pv,sc,jobs,cronjobs --all-namespaces -o wide|sed "s/^/\t/"|sed "s/^\tNAME/>>\tNAME/"; echo; }
 
 kx()	{ kubectl exec -it pod/${1##*/} -- /bin/sh; }
-kxi()	{ kubectl run -it --rm $(echo $1|sed -r 's|.*/([^/:]*):*[^:]*$|\1|') --image="$1" --restart=Never -- /bin/sh; }
+kxi()	{ kubectl run -it --rm $(echo $1|sed -r 's|.*/([^/:]*):*[^:]*$|\1|') --image="$1" --command=true --restart=Never -- /bin/sh; }
+k.zap() { kubectl delete statefulset,pod,pv,pvc,storageClass,service --all --grace-period=0 --force; }
+
+# Software Tools
+alias 	lens='/opt/Lens/kontena-lens'
+
+# Main debugging tools
+alias	k.log='k.log -f'
+alias	k.describe='kubectl describe'
+alias	k.events='kubectl get events --watch' # --sort-by='.metadata.creationTimestamp'
+
+# Shortcuts
+k.pods()	{ tput rmam; kubectl get pods -o wide --show-labels; tput smam; }
+k.nodes()	{ tput rmam; kubectl get nodes -o wide; tput smam; }
+k.nodes.labels(){ tput rmam; kubectl get nodes --show-labels; tput smam; }
+k.jobs()	{ tput rmam; kubectl get jobs -o wide; tput smam; }
+k.cronjobs()	{ tput rmam; kubectl get cronjobs -o wide; tput smam; }
+k.delete.all() 	{ kubectl delete $1 --all --grace-period=0 --force; }
 
 # Primitives
 alias	k.create='kc create -f'
 alias	k.apply='kubectl apply -f'
-alias	k.delete='kubectl delete -f'
-alias	k.describe='kubectl describe'
+alias	k.delete='kubectl delete'
 alias	k.edit='kubectl edit'
 alias	k.get='kubectl get -o wide'
 alias	k.get.all='kubectl get all -o wide --all-namespaces'
+alias	k.yaml='kubectl get -o yaml'
 
 # Examples
-alias	k.ns.create='kubectl create namespace'
-alias	k.events='kubectl get events'
 alias	k.deployment='kubectl get deployment'
 alias	k.deployment.all='kubectl get deployment --all-namespaces'
 alias	k.services='kubectl get services --sort-by=.metadata.name'
@@ -37,20 +55,21 @@ alias	kc=kubectl
 alias	k.api.resources='kubectl api-resources'
 alias	k.config='kubectl config view'
 alias	k.config.file='cat ~/.kube/config'
-k.ctx() { echo List:; kubectl config get-contexts|sed 's/^/\t/'; kubectx|sed 's/^/\t/'; echo Current:; kubectl config current-context|sed 's/^/\t/'; }
-alias	k.ctx.use='kubectl config use-context'
+cx()	{ [ -z "$1" ] && { kubectl config get-contexts||true; } || { kubectl config use-context "$1"; kubectl config get-contexts; }; }
 alias	k.log='kubectl logs'
-alias	klog='k.log -f'
-alias	k.ns.set='kubectl config set-context --current --namespace'
-k.ns()	{ kubectl get namespace; echo Current: $(kubectl config view --minify|grep namespace|awk '{print $2}'); }
-alias	k.nodes='kubectl get nodes'
-alias	pod='kubectl get pods -o wide --show-labels'
-alias	pod.edit='kubectl edit pod'
-alias	pod.delete='kubectl delete pod'
-alias	pod.describe='kubectl describe pod'
-alias	pods='kubectl get pods -o wide --show-labels --all-namespaces'
-alias	pods.yaml='kubectl get pods --all-namespaces -o yaml'
-k.sh() { kc exec -it $1 -- /bin/sh; }
+
+# Namespaces
+ns(){ [ -z "$1" ] && { 
+	echo "$(kubectl get namespace) CURRENT: $(kubectl config view --minify|grep namespace|awk '{print $2}')"||true
+	} || { 
+	kubectl config set-context --current --namespace "$1";
+	echo "$(kubectl get namespace) CURRENT: $(kubectl config view --minify|grep namespace|awk '{print $2}')"||true
+}; }
+alias ns.create='kubectl create namespace'
+
+alias	pods.yaml='kubectl get pods -o yaml'
+k.sh()	{ kc exec -it $1 -- /bin/sh; }
+k.images(){ kubectl get pods -o jsonpath='{range .items[*]}{@.spec.containers[*].image}{"\t"}{@.metadata.namespace}{"\t"}{@.metadata.name}{"\n"}{end}'|column -t; }
 
 # Health checking
 alias 	k.health.check='kubectl get --raw="/readyz?verbose"'
@@ -99,26 +118,30 @@ EOF
 }
 alias mk='minikube'
 alias mk.env='eval $(minikube docker-env)'
-alias mk.ssh='minikube ssh'
+alias mk.env.unset='eval $(minikube docker-env -u)'
+alias mk.ssh=ssh.mk
 alias mk.dashboard='minikube dashboard'
 alias mk.status='minikube status'
 alias mk.stop='minikube stop'
 alias mk.services='mk service list'
 mk.start(){
 	export MINIKUBE_IN_STYLE=false;
-	#docker run -d --rm -p 80:5000 --name registry -v /opt/docker/registry/:/var/lib/registry registry:2
-	minikube start --cpus 10 --memory 13g --mount --mount-string /nfs:/nfs;
+	minikube start --cpus 10 --memory 20g --mount --mount-string /var/meia:/var/meia;
+	# Do not remove echos! The environment change might not be effective, and drivers could be installed in a different cluster. 
+	echo kubectl apply --namespace default --cluster minikube -f k8s/csi/rbac-csi-nfs-controller.yaml
+	echo kubectl apply --namespace default --cluster minikube -f k8s/csi/csi-nfs-controller.yaml
+	echo kubectl apply --namespace default --cluster minikube -f k8s/csi/csi-nfs-driverinfo.yaml
+	echo kubectl apply --namespace default --cluster minikube -f k8s/csi/csi-nfs-node.yaml
 }
 mk.zap()	{ mk.stop; mk delete; sleep 5; d.clean; mk.start; mk.tunnel; mk.status; }
 mk.tunnel()	{ minikube tunnel &> ~/.minikube.tunnel.log & }
-mk.login.gtd()	{
-	minikube ssh 'mkdir -p /home/docker/.docker'
-	scp -i $(minikube ssh-key) /home/rodolfoap/.docker/config.json docker@$(minikube ip):/home/docker/.docker/config.json
-	minikube ssh 'docker login registry.gtd-international.com'
-}
 
 # This takes a couple of seconds to load.
 [ -f /usr/bin/kubectl ] && {
 	. <(kubectl completion bash)
 	complete -F __start_kubectl kc
 }
+kind.create.cluster(){ kind create cluster --config kind-config.yaml; }
+kind.images(){ docker exec -it kind-control-plane sh -c 'crictl images'; }
+kindx(){ docker exec -it kind-control-plane sh -c bash; }
+k9s(){ docker run --rm -it -v ~/.k8s/config:/root/.kube/config quay.io/derailed/k9s; }
