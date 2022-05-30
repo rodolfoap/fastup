@@ -76,9 +76,9 @@ dx(){	# This is the last d.ssh version, autoselects image/container
 }
 dl(){
 	echo d images '(images)'
-	docker images --format "table {{.ID}}\t{{.Repository}}\t{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}"|grep -v -f ~/.docker/ifilter|sed "s/^/\t/";
+	docker images --format "table {{.ID}}\t{{.Repository}}\t{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}"|sed "s/^/\t/";
 	echo d ps -a '(containers)'
-	docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Image}}\t{{.Networks}}\t{{.Ports}}"|grep -v -f ~/.docker/cfilter|sed "s/^/\t/"
+	docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Image}}\t{{.Networks}}\t{{.Ports}}"|sed "s/^/\t/"
 }
 dla(){
 	echo d network ls '(volumes)'
@@ -97,9 +97,6 @@ dlaa(){
 	docker images --format "table {{.ID}}\t{{.Repository}}\t{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}"|sed "s/^/\t/";
 	echo d ps -a '(containers)'
 	docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Image}}\t{{.Networks}}\t{{.Ports}}"|sed "s/^/\t/"
-}
-d.filter(){
-	vi -o ~/.docker/ifilter ~/.docker/cfilter
 }
 d.inspect () {
 	docker inspect --format '{{$e := . }}{{with .NetworkSettings}}=== {{$e.Name}} ===
@@ -120,7 +117,7 @@ d.zap.exited(){ docker rm $(docker ps -a|grep Exited|awk '{print $1;}'); }
 d.zap.i(){
 	docker stop $(docker ps -aq) 2>/dev/null;
 	docker rm $(docker ps -aq) 2>/dev/null;
-	docker images|egrep --color=auto -i --color=auto -v -f ~/.docker/ifilter|grep -v IMAGE|awk '{print $3}'|xargs docker rmi -f
+	docker images|grep -v IMAGE|awk '{print $3}'|xargs docker rmi -f
 }
 d.clean(){
 	echo Cleaning "'Exited'" containers...
